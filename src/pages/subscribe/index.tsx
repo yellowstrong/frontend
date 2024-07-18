@@ -3,65 +3,86 @@ import * as api from '../../apis/subscribe.ts'
 import ModifyModal from "./modifyModal.tsx";
 import {Fragment, useState} from "react";
 import {Button, Form} from "antd";
+import {useRequest} from "ahooks";
 
 function Subscribe() {
 
     const [openModifyModal, setOpenModifyModal] = useState(false);
     const [form] = Form.useForm();
 
+    const {runAsync} = useRequest(api.get_subscribes, {manual: true})
+
     const columns: ProColumns[] = [
         {
             title: '订阅名称',
             dataIndex: 'name',
+            fixed: 'left',
+            width:150,
+            ellipsis: true
         },
         {
             title: '关联rss',
-            dataIndex: ['rss','alias'],
+            dataIndex: ['rss', 'alias'],
+            ellipsis: true,
         },
         {
             title: '最后更新',
-            dataIndex: ['rss','latest_pub'],
+            dataIndex: ['rss', 'latest_pub'],
+            ellipsis: true,
+            valueType: 'dateTime'
         },
         {
             title: '匹配名称',
             dataIndex: 'match_title',
+            ellipsis: true,
         },
         {
             title: '匹配季',
             dataIndex: 'match_season',
+            ellipsis: true,
         },
         {
             title: '匹配制作组',
             dataIndex: 'match_team',
+            ellipsis: true,
         },
         {
             title: '包含',
             dataIndex: 'include',
+            ellipsis: true,
         },
         {
             title: '排除',
             dataIndex: 'exclude',
+            ellipsis: true,
         },
         {
             title: '下载路径',
             dataIndex: 'download_path',
+            ellipsis: true,
         },
         {
             title: '转移路径',
             dataIndex: 'transfer_path',
+            ellipsis: true,
         },
         {
             title: '状态',
+            width: 100,
             dataIndex: 'status',
+            fixed: 'right',
+            ellipsis: true,
             valueEnum: {
-                true: { text: '进行中', status: 'Processing' },
-                false: { text: '已停止', status: 'Error' },
+                true: {text: '进行中', status: 'Processing'},
+                false: {text: '已停止', status: 'Error'},
             }
         },
         {
             title: '操作',
+            width: 150,
             valueType: 'option',
             key: 'option',
+            fixed: 'right',
             render: (_, record) => [
                 <a
                     key="edit"
@@ -95,34 +116,18 @@ function Subscribe() {
     return (
         <Fragment>
             <ProTable
-                cardBordered
+                scroll={{x:1500}}
+                bordered
                 columns={columns}
                 request={async (params) => {
-                    const res = await api.get_subscribes({
-                        page: params.current,
-                        page_size: params.pageSize,
-                    })
+                    const res = await runAsync(params)
                     return {
                         data: res.data.data.record_list,
-                        success: res.data.code === 200,
                         total: res.data.data.record_total,
-                    };
+                    }
                 }}
-                columnsState={{
-                    persistenceKey: 'pro-table-singe-demos',
-                    persistenceType: 'localStorage',
-                    defaultValue: {
-                        option: {fixed: 'right', disable: true},
-                    },
-                    onChange(value) {
-                        console.log('value: ', value);
-                    },
-                }}
-                pagination={{
-                    pageSize: 5,
-                }}
-                columnEmptyText={'-'}
-                search={{}}
+                pagination={{pageSize: 5}}
+                search={false}
                 rowKey={"id"}
                 toolBarRender={() => [
                     <Button

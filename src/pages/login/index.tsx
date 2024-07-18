@@ -1,8 +1,8 @@
-import {Button, Form, Input} from "antd";
 import {useDispatch, useSelector} from "react-redux";
 import {Dispatch, RootState} from "../../models";
 import {Navigate, useParams} from "react-router-dom";
-import {LockOutlined, UserOutlined, EyeInvisibleOutlined, EyeTwoTone} from "@ant-design/icons";
+import {LockOutlined, UserOutlined} from "@ant-design/icons";
+import {LoginForm, ProFormCheckbox, ProFormText} from "@ant-design/pro-components";
 
 function Login() {
 
@@ -17,37 +17,46 @@ function Login() {
     }
 
     return !token ? (
-        <div className={'flex flex-col items-center h-full w-full overflow-auto bg-login-bg bg-100%'}>
-            <div className={'flex flex-col justify-center items-center mt-32'}>
-                <span className={'text-4xl'}>RSS Feed Toolbox</span>
-                <span className={'text-l mt-3 mb-10 text-gray-400'}>这是一个简易的RSS订阅工具箱</span>
-                <div className={'w-96'}>
-                    <Form onFinish={doLogin}>
-                        <Form.Item name={'username'} rules={[{required: true, message: '请输入用户名'}]}>
-                            <Input size={"large"} placeholder={'请输入用户名'} prefix={<UserOutlined/>}/>
-                        </Form.Item>
-                        <Form.Item name={'password'} rules={[{required: true, message: '请输入密码'}]}>
-                            <Input.Password
-                                size={"large"}
-                                placeholder={'请输入密码'}
-                                prefix={<LockOutlined/>}
-                                iconRender={(visible) => (visible ? <EyeTwoTone/> : <EyeInvisibleOutlined/>)}
-
-                            />
-                        </Form.Item>
-                        <Button
-                            style={{marginTop: 20}}
-                            loading={isLoading}
-                            htmlType={"submit"}
-                            className={'w-full'}
-                            size={"large"}
-                            type={"primary"}>
-                            登录
-                        </Button>
-                    </Form>
+        <div style={{height:'100vh',paddingTop:100}}>
+            <LoginForm
+                logo=""
+                title="RSS影视订阅"
+                subTitle="通过RSS实时订阅电影、电视剧实现自动下载整理"
+                onFinish={doLogin}
+                loading={isLoading}>
+                <ProFormText
+                    name="username"
+                    fieldProps={{
+                        size: 'large',
+                        prefix: <UserOutlined className={'prefixIcon'}/>,
+                    }}
+                    placeholder={'用户名'}
+                    rules={[
+                        {
+                            required: true,
+                            message: '请输入用户名!',
+                        },
+                    ]}
+                />
+                <ProFormText.Password
+                    name="password"
+                    fieldProps={{
+                        size: 'large',
+                        prefix: <LockOutlined className={'prefixIcon'}/>,
+                    }}
+                    placeholder={'密码'}
+                    rules={[
+                        {
+                            required: true,
+                            message: '请输入密码！',
+                        },
+                    ]}
+                />
+                <div style={{marginBlockEnd: 24,}}>
+                    <ProFormCheckbox noStyle name="autoLogin">自动登录</ProFormCheckbox>
+                    <a style={{float: 'right',}}>忘记密码</a>
                 </div>
-            </div>
-
+            </LoginForm>
         </div>
     ) : (
         <Navigate to={decodeURIComponent(next || '/')}/>

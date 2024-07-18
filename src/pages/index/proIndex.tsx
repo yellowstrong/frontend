@@ -95,7 +95,7 @@ export default function ProIndex() {
             setPathname(item.path)
             navigate(item.path)
         }}>
-            {dom}
+                {dom}
         </div>
     }
 

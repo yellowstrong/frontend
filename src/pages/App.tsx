@@ -1,9 +1,8 @@
 import './App.css'
 import {Helmet} from "react-helmet";
-import {Navigate, Route, Routes} from "react-router-dom";
+import {Route, Routes} from "react-router-dom";
 import {routes} from "../routes/routes";
 import ContextElement from "../routes/contextRouter.tsx";
-import NotFound from "./not-found";
 
 
 function App() {
@@ -15,13 +14,13 @@ function App() {
 
             if (routes[path].children) {
                 return (
-                    <Route path={fullPath}
+                    <Route key={fullPath} path={fullPath}
                            element={<ContextElement name={routes[path].name} children={routes[path].component}/>}>
                         {renderRoutes(routes[path].children, fullPath)}
                     </Route>
                 );
             } else {
-                return <Route path={fullPath}
+                return <Route key={fullPath}  path={fullPath}
                               element={<ContextElement name={routes[path].name} children={routes[path].component}/>}/>
             }
         });
@@ -36,7 +35,6 @@ function App() {
             </Helmet>
             <Routes>
                 {renderRoutes(routes)}
-
             </Routes>
         </div>
 

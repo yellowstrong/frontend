@@ -7,7 +7,7 @@ import {
     ProFormSelect,
     ProFormText
 } from "@ant-design/pro-components";
-import {get_all_site_rss} from "../../apis/site.ts";
+import {get_site_rss} from "../../apis/site.ts";
 
 interface ModifyModalProps extends ModalFormProps {
 
@@ -19,7 +19,7 @@ function ModifyModal(props: ModifyModalProps) {
     const [rss, setRss] = useState<any>([])
 
     useEffect(() => {
-        get_all_site_rss().then((res) => {
+        get_site_rss().then((res) => {
             setRss(res.data.data.map((item: any) => {
                 return {
                     label: `${item.alias} - ${item.url}`,
