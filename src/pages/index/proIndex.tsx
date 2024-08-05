@@ -1,4 +1,11 @@
-import {AppstoreOutlined, HomeOutlined, LogoutOutlined, SettingOutlined, StarOutlined,} from '@ant-design/icons';
+import {
+    AppstoreOutlined,
+    DownloadOutlined,
+    HomeOutlined,
+    LogoutOutlined,
+    SettingOutlined,
+    StarOutlined,
+} from '@ant-design/icons';
 import {PageContainer, ProCard, ProLayout} from '@ant-design/pro-components';
 import {Dropdown,} from 'antd';
 import React, {useEffect, useState} from 'react';
@@ -23,6 +30,11 @@ const routes = {
             path: '/site',
             name: '站点配置',
             icon: <AppstoreOutlined/>
+        },
+        {
+            path: '/downloader',
+            name: '下载器配置',
+            icon: <DownloadOutlined />
         },
         {
             path: '/setting',
@@ -95,7 +107,7 @@ export default function ProIndex() {
             setPathname(item.path)
             navigate(item.path)
         }}>
-                {dom}
+            {dom}
         </div>
     }
 

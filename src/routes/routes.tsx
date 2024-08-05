@@ -1,12 +1,12 @@
 import Login from "../pages/login";
-import Index from "../pages/index";
 import Subscribe from "../pages/subscribe";
 import Site from "../pages/site";
 import Dashboard from "../pages/dashboard";
 import Setting from "../pages/setting";
 import NotFound from "../pages/not-found";
 import ProIndex from '../pages/index/proIndex.tsx'
-import RedirectDashboard from "../pages/RedirectDashboard";
+import RedirectDashboard from "../pages/redirect-dashboard";
+import Downloader from "../pages/downloader";
 
 export const routes = {
     '/login/:next?': {
@@ -23,6 +23,10 @@ export const routes = {
             '/site': {
                 name: '站点',
                 component: Site
+            },
+            '/downloader': {
+                name: '下载器',
+                component: Downloader
             },
             '/subscribe': {
                 name: '订阅',
