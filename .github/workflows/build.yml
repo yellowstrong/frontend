@@ -30,7 +30,7 @@ jobs:
       - name: Build frontend
         id: build_frontend
         run: |
-          npm
+          npm install
           npm run build
           echo "$frontend_version" > dist/version.txt
           zip -r dist.zip dist
