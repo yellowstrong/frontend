@@ -1,0 +1,48 @@
+name: Build Frontend
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - develop
+    paths:
+      - package.json
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Release version
+        id: release_version
+        run: |
+          frontend_version=$(jq -r '.version' package.json)
+          echo "frontend_version=v$frontend_version" >> $GITHUB_ENV
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Build frontend
+        id: build_frontend
+        run: |
+          npm
+          npm build
+          echo "$frontend_version" > dist/version.txt
+          zip -r dist.zip dist
+
+      - name: Generate Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ env.frontend_version }}
+          name: ${{ env.frontend_version }}
+          draft: false
+          prerelease: false
+          files: |
+            dist.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
