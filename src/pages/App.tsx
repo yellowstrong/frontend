@@ -3,6 +3,7 @@ import {Helmet} from "react-helmet";
 import {Route, Routes} from "react-router-dom";
 import {routes} from "../routes/routes";
 import ContextElement from "../routes/contextRouter.tsx";
+import config from "../config";
 
 
 function App() {
@@ -30,7 +31,7 @@ function App() {
     return (
         <div className='h-dvh'>
             <Helmet>
-                <title>{import.meta.env.VITE_SITE_TITLE}</title>
+                <title>{config.SITE_TITLE}</title>
                 <link rel={'icon'} href={''}/>
             </Helmet>
             <Routes>

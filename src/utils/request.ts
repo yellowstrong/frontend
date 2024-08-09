@@ -1,9 +1,10 @@
 import Axios from "axios";
 import {message} from "antd";
 import {store} from "../models";
+import config from "../config";
 
 const request = Axios.create({
-    baseURL: import.meta.env.VITE_BASE_URL,
+    baseURL: config.BASE_API,
 })
 
 request.interceptors.request.use(request => {

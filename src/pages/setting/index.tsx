@@ -1,11 +1,12 @@
-import {Card} from "antd";
-import PageHeaderLayout from "../../layout/pageHeaderLayout.tsx";
+import {Fragment} from "react";
+
 
 function Setting() {
+
     return (
-        <PageHeaderLayout>
-            <Card></Card>
-        </PageHeaderLayout>
+        <Fragment>
+
+        </Fragment>
     )
 }
 
