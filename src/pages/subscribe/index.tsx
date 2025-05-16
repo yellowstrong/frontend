@@ -1,23 +1,30 @@
-import {ProColumns, ProTable} from "@ant-design/pro-components";
+import {type ActionType, ProColumns, ProTable} from "@ant-design/pro-components";
 import * as api from '../../apis/subscribe.ts'
 import ModifyModal from "./modifyModal.tsx";
-import {Fragment, useState} from "react";
+import {Fragment, useRef, useState} from "react";
 import {Button, Form} from "antd";
 import {useRequest} from "ahooks";
 
 function Subscribe() {
 
-    const [openModifyModal, setOpenModifyModal] = useState(false);
-    const [form] = Form.useForm();
-
+    const ref = useRef<ActionType>()
+    const [form] = Form.useForm()
+    const [openModifyModal, setOpenModifyModal] = useState(false)
     const {runAsync} = useRequest(api.get_subscribes, {manual: true})
+    const {runAsync: editSubscribe} = useRequest(api.edit_subscribe, {manual: true})
 
     const columns: ProColumns[] = [
         {
-            title: '订阅名称',
-            dataIndex: 'name',
+            title: '媒体名称',
+            dataIndex: 'media_name',
             fixed: 'left',
-            width:150,
+            width: 150,
+            ellipsis: true
+        },
+        {
+            title: 'TMDB ID',
+            dataIndex: 'media_tmdb_id',
+            width: 150,
             ellipsis: true
         },
         {
@@ -57,16 +64,6 @@ function Subscribe() {
             ellipsis: true,
         },
         {
-            title: '下载路径',
-            dataIndex: 'download_path',
-            ellipsis: true,
-        },
-        {
-            title: '转移路径',
-            dataIndex: 'transfer_path',
-            ellipsis: true,
-        },
-        {
             title: '状态',
             width: 100,
             dataIndex: 'status',
@@ -89,8 +86,8 @@ function Subscribe() {
                     onClick={() => {
                         form.setFieldsValue({
                             ...record,
-                            include: record.include.split(','),
-                            exclude: record.exclude.split(',')
+                            include: record.include && record.include.split(',') || null,
+                            exclude: record.exclude && record.exclude.split(',') || null
                         })
                         setOpenModifyModal(true)
                     }}
@@ -110,14 +107,19 @@ function Subscribe() {
     ]
 
     async function submit(values: any) {
-        debugger
+        values.include = values.include && values.include.join(',')
+        values.exclude = values.exclude && values.exclude.join(',')
+        await editSubscribe(values)
+        ref.current?.reload()
+        setOpenModifyModal(false)
     }
 
     return (
         <Fragment>
             <ProTable
-                scroll={{x:1500}}
+                scroll={{x: 1500}}
                 bordered
+                actionRef={ref}
                 columns={columns}
                 request={async (params) => {
                     const res = await runAsync(params)

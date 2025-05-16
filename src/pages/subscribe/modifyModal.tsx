@@ -3,7 +3,7 @@ import {
     ModalForm,
     ModalFormProps,
     ProForm,
-    ProFormCheckbox,
+    ProFormCheckbox, ProFormDigit, ProFormItem,
     ProFormSelect,
     ProFormText
 } from "@ant-design/pro-components";
@@ -30,33 +30,19 @@ function ModifyModal(props: ModifyModalProps) {
     }, []);
 
     return (
-        <ModalForm
-            {...otherProps}
-        >
-            <ProForm.Group>
-                <ProFormText width="sm" name="name" required label="订阅名称" placeholder="请输入订阅名称"
-                             rules={[{required: true, message: '这是必填项'}]}
-                />
-                <ProFormSelect width="lg" name="site_rss_id" required label="关联RSS" placeholder="请选择RSS"
-                               rules={[{required: true, message: '这是必填项'}]} options={rss}
-                />
-            </ProForm.Group>
-            <ProForm.Group>
-                <ProFormText width="sm" name="match_title" label="匹配名称" placeholder="正则式"
-                             rules={[{required: true, message: '这是必填项'}]}/>
-                <ProFormText width="sm" name="match_season" label="匹配季" placeholder="正则式"/>
-                <ProFormText width="sm" name="match_team" label="匹配制作组" placeholder="正则式"/>
-            </ProForm.Group>
-            <ProForm.Group>
-                <ProFormCheckbox.Group name={'include'} label={'包含'}
-                                       options={['4k', '1080P', '720P', 'DV', 'HDR', 'EDR', 'HQ', '60fps']}/>
-                <ProFormCheckbox.Group name={'exclude'} label={'排除'}
-                                       options={['4k', '1080P', '720P', 'DV', 'HDR', 'EDR', 'HQ', '60fps']}/>
-            </ProForm.Group>
-            <ProForm.Group>
-                <ProFormText width="md" name="download_path" label="下载路径"/>
-                <ProFormText width="md" name="transfer_path" label="转移路径"/>
-            </ProForm.Group>
+        <ModalForm{...otherProps} layout={'vertical'} grid={true}>
+            <ProFormItem name={'id'} noStyle/>
+            <ProFormText colProps={{span: 18}} name="media_name" label="媒体名称" rules={[{ required: true, message: '请输入媒体名称!' }]}/>
+            <ProFormDigit colProps={{span: 6}} name="media_tmdb_id" label="TMDB ID"/>
+            <ProFormSelect colProps={{span: 24}} name="site_rss_id" label="关联RSS" options={rss} rules={[{ required: true, message: '请选择RSS源!' }]}/>
+            <ProFormText colProps={{span: 8}} name="match_title" label="匹配名称" rules={[{ required: true, message: '请输入匹配名称!' }]} placeholder="正则式"/>
+            <ProFormText colProps={{span: 8}} name="match_season" label="匹配季" placeholder="正则式"/>
+            <ProFormText colProps={{span: 8}} name="match_team" label="匹配制作组" placeholder="正则式"/>
+            <ProFormCheckbox.Group colProps={{span: 24}} name={'include'} label={'包含'}
+                                   options={['4k', '1080P', '720P', 'DV', 'HDR', 'EDR', 'HQ', '60fps']}/>
+            <ProFormCheckbox.Group colProps={{span: 24}} name={'exclude'} label={'排除'}
+                                   options={['4k', '1080P', '720P', 'DV', 'HDR', 'EDR', 'HQ', '60fps']}/>
+
         </ModalForm>
     )
 }
